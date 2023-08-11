@@ -16,3 +16,5 @@ const cardapio = [
   { codigo: 'combo1', descricao: '1 Suco e 1 Sanduíche', valor: 'R$ 9,50' },
   { codigo: 'combo2', descricao: '1 Café e 1 Sanduíche', valor: 'R$ 7,50' },
 ];
+
+export default cardapio;
