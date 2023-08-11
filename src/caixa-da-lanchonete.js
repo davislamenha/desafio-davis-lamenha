@@ -24,6 +24,17 @@ class CaixaDaLanchonete {
     return !qtdZero;
   }
 
+  verificarExtra(itens, extra, principal) {
+    const temExtra = itens.some(({ codigo }) => codigo === extra);
+
+    if (temExtra) {
+      const temPrincipal = itens.some(({ codigo }) => codigo === principal);
+      return temPrincipal;
+    }
+
+    return true;
+  }
+
   calcularValorDaCompra(metodoDePagamento, itens) {
     if (!itens.length) return 'Não há itens no carrinho de compra!';
 
@@ -32,6 +43,20 @@ class CaixaDaLanchonete {
     if (!this.validarQuantidade(itensFormatados)) return 'Quantidade inválida!';
 
     if (!this.validarItens(itensFormatados)) return 'Item inválido!';
+
+    const verificarExtraCafe = this.verificarExtra(
+      itensFormatados,
+      'chantily',
+      'cafe',
+    );
+    const verificarExtraSanduiche = this.verificarExtra(
+      itensFormatados,
+      'queijo',
+      'sanduiche',
+    );
+
+    if (!verificarExtraCafe || !verificarExtraSanduiche)
+      return 'Item extra não pode ser pedido sem o principal';
 
     return '';
   }
