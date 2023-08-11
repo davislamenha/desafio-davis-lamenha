@@ -93,7 +93,9 @@ class CaixaDaLanchonete {
       this.somarTotalDosItens(itensFormatados),
     );
 
-    return '';
+    if (!valorTotalDaCompra) return 'Forma de pagamento inválida!';
+
+    return 'R$ ' + valorTotalDaCompra.toFixed(2).replace('.', ',');
   }
 }
 
