@@ -10,10 +10,28 @@ class CaixaDaLanchonete {
     });
   }
 
+  validarItens(itens) {
+    let itemNaoExiste = false;
+    itens.forEach(({ codigo }) => {
+      if (!cardapio.find((item) => item.codigo === codigo))
+        itemNaoExiste = true;
+    });
+    return !itemNaoExiste;
+  }
+
+  validarQuantidade(itens) {
+    const qtdZero = itens.some(({ quantidade }) => quantidade <= 0);
+    return !qtdZero;
+  }
+
   calcularValorDaCompra(metodoDePagamento, itens) {
     if (!itens.length) return 'Não há itens no carrinho de compra!';
 
     const itensFormatados = this.formatarItens(itens);
+
+    if (!this.validarQuantidade(itensFormatados)) return 'Quantidade inválida!';
+
+    if (!this.validarItens(itensFormatados)) return 'Item inválido!';
 
     return '';
   }
