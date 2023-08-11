@@ -35,6 +35,36 @@ class CaixaDaLanchonete {
     return true;
   }
 
+  aplicarTaxaOuDesconto(metodoDePagamento, valorTotal) {
+    const regra = {
+      ['dinheiro']: 0.05,
+      ['credito']: 0.03,
+    };
+
+    const taxa = valorTotal * regra[metodoDePagamento];
+
+    switch (metodoDePagamento) {
+      case 'dinheiro':
+        return valorTotal - taxa;
+      case 'credito':
+        return valorTotal + taxa;
+      case 'debito':
+        return valorTotal;
+
+      default:
+        return false;
+    }
+  }
+
+  somarTotalDosItens(itens) {
+    const totalDosItens = itens.map(({ codigo, quantidade }) => {
+      const valor = cardapio.find((item) => item.codigo === codigo).valor;
+      const valorFormatado = +valor.replace('R$', '').replace(',', '.');
+      return valorFormatado * quantidade;
+    });
+    return totalDosItens.reduce((acum, atual) => (acum += atual), 0);
+  }
+
   calcularValorDaCompra(metodoDePagamento, itens) {
     if (!itens.length) return 'Não há itens no carrinho de compra!';
 
@@ -57,6 +87,11 @@ class CaixaDaLanchonete {
 
     if (!verificarExtraCafe || !verificarExtraSanduiche)
       return 'Item extra não pode ser pedido sem o principal';
+
+    const valorTotalDaCompra = this.aplicarTaxaOuDesconto(
+      metodoDePagamento,
+      this.somarTotalDosItens(itensFormatados),
+    );
 
     return '';
   }
